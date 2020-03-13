@@ -16,17 +16,14 @@ class InfoPage extends Component {
           Shelf Page
     {JSON.stringify(this.props.item)}
           <ul>
-            
-            {this.props.item[0] ?
-            <p>hello</p>
-            :
-              <>
-                {this.props.item.map(shelfItem =>
-                  <li key= {shelfItem.id}>
-                    <img src={shelfItem.image_url} />
-                  </li>)} 
-                </>  
-             }
+            {
+              this.props.item[0] ?
+                <ul>{this.props.item.map((thing) =>
+                  <li>hi</li>
+                )}</ul>
+                :
+                <p></p>
+            }
           </ul>
         </p>
       </div>
