@@ -21,8 +21,6 @@ router.get('/', (req, res) => {
  */
 router.post('/', (req, res) => {
 const shelfItem = req.body;
-    console.log(shelfItem);
-
 //   const password = encryptLib.encryptPassword(req.body.password);
   const queryText = 'INSERT INTO "item" (description, image_url, user_id) VALUES ($1, $2, $3)';
   pool
@@ -33,11 +31,20 @@ const shelfItem = req.body;
 
 router.delete('/:id', (req, res) => {
     const deleteId =req.params.id;
-    console.log(deleteId);
     const queryText = `DELETE FROM "item" WHERE "id" =$1`;
     pool
         .query(queryText, [deleteId])
         .then(() => res.sendStatus(200))
+        .catch(() => res.sendStatus(500));
+});
+
+router.put('/:id', (req, res) => {
+    const shelfItem = req.body;
+    //   const password = encryptLib.encryptPassword(req.body.password);
+    const queryText = 'UPDATE "item" SET (description, image_url) = ($1, $2) WHERE "id"=$3';
+    pool
+        .query(queryText, [shelfItem.tempItemDescription, shelfItem.tempItemImageUrl, shelfItem.tempItemId])
+        .then(() => res.sendStatus(201))
         .catch(() => res.sendStatus(500));
 });
 

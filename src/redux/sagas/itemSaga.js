@@ -26,9 +26,7 @@ function* fetchItem() {
 }
 
 function* postItem (action){
-    let objectToSend = action.payload;
-    console.log('logging objectToSend from itemSaga', objectToSend);
-    
+    let objectToSend = action.payload;    
     yield axios.post('/api/shelf', objectToSend)
     .catch((error) =>{
 console.log(error);
@@ -43,10 +41,22 @@ function* deleteItem(action){
         });
     yield put({ type: 'FETCH_ITEM' });
 }
+
+function* editItem(action) {
+    let objectToSend = action.payload;
+    console.log('logging object to send from put', objectToSend);
+    
+    yield axios.put(`/api/shelf/${objectToSend.tempItemId}`, objectToSend)
+        .catch((error) => {
+            console.log(error);
+        });
+    yield put({ type: 'FETCH_ITEM' });
+}
 function* itemSaga() {
     yield takeLatest('FETCH_ITEM', fetchItem);
     yield takeEvery ('POST_ITEM', postItem);
     yield takeEvery ('DELETE_ITEM', deleteItem);
+    yield takeEvery ('EDIT_ITEM', editItem);
 }
 
 export default itemSaga;

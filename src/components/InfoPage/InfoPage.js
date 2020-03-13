@@ -10,7 +10,9 @@ class InfoPage extends Component {
   state = {
     tempItemDescription: "",
     tempItemImageUrl: "",
-    tempItemUserId: this.props.user.id
+    tempItemUserId: this.props.user.id,
+    tempItemId: "",
+    isEditMode: false
   };
 
   onChange = (event, type) => {
@@ -19,10 +21,26 @@ class InfoPage extends Component {
 
   onSubmit = () => {
     console.log('Looky here', this.state);
-    this.props.dispatch({
-      type: 'POST_ITEM',
-      payload: this.state
-    });
+    if (this.state.isEditMode) {
+
+      this.props.dispatch({
+        type: 'EDIT_ITEM',
+        payload: this.state
+      })
+      this.setState({
+        tempItemDescription: "",
+        tempItemImageUrl: "",
+        tempItemId: "",
+        isEditMode: false})
+        console.log('new edits', this.state);
+        
+    }
+    else {
+      this.props.dispatch({
+        type: 'POST_ITEM',
+        payload: this.state
+      })
+    }
   };
 
   deleteItem = (data) => {
@@ -32,21 +50,30 @@ class InfoPage extends Component {
     })
   }
 
+  editItem = (data) => {
+    this.setState({
+      isEditMode: true,
+      tempItemId: data
+    });
+console.log('logging end it mode', this.state.isEditMode);
+
+  }
+
   render() {
     return (
       <div>
         Shelf Page
-        <input placeholder="description" onChange={event => this.onChange(event, "tempItemDescription")}></input>
-        <input placeholder="earl" onChange={event => this.onChange(event, "tempItemImageUrl")}></input>
+        <input label="Description" placeholder='Description' onChange={event => this.onChange(event, "tempItemDescription")}></input>
+        <input label="Image Url" placeholder='Image Url' onChange={event => this.onChange(event, "tempItemImageUrl")}></input>
         <button onClick={this.onSubmit}>Submit</button>
         {this.props.item[0] ? (
           <ul>
             {this.props.item.map(thing => (
-              <>
-                <img src={thing.image_url} width='350px' />
-                <li>{thing.description} <button onClick={() => this.deleteItem(thing.id)}>DELETE</button></li>
+              <div key={thing.id} >
+                <img alt='shelf item' src={thing.image_url} width='350px' />
+                <li>{thing.description} <button onClick={() => this.deleteItem(thing.id)}>DELETE</button><button onClick={() => this.editItem(thing.id)}>EDIT</button></li>
 
-              </>
+              </div>
             ))}
           </ul>
         ) : (
