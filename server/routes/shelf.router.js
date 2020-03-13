@@ -19,9 +19,18 @@ router.get('/', (req, res) => {
 /**
  * Add an item for the logged in user to the shelf
  */
-router.post('/', (req, res) => {
+// router.post('/', (req, res) => {
 
-});
+// const shelfItem = req.body.shelfItem;
+// //   const password = encryptLib.encryptPassword(req.body.password);
+//   const queryText = 'INSERT INTO "item" (description, image_url, user_id) VALUES ($1, $2, $3)';
+//   pool
+//     .query(queryText, [shelfItem.description, shelfItem.image_url, shelfItem.user_id])
+//     .then(() => res.sendStatus(201))
+//     .catch(() => res.sendStatus(500));
+// });
+
+
 
 
 /**
