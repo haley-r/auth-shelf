@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest,takeEvery } from 'redux-saga/effects';
+
 
 // worker Saga: will be fired on "FETCH_ITEM" actions
 function* fetchItem() {
@@ -24,8 +25,28 @@ function* fetchItem() {
     }
 }
 
+function* postItem (action){
+    let objectToSend = action.payload;
+    console.log('logging objectToSend from itemSaga', objectToSend);
+    
+    yield axios.post('/api/shelf', objectToSend)
+    .catch((error) =>{
+console.log(error);
+    });
+    yield put({type: 'FETCH_ITEM'});
+}
+
+function* deleteItem(action){
+    yield axios.delete(`/api/shelf/${action.payload}`)
+        .catch((error) => {
+            console.log(error);
+        });
+    yield put({ type: 'FETCH_ITEM' });
+}
 function* itemSaga() {
     yield takeLatest('FETCH_ITEM', fetchItem);
+    yield takeEvery ('POST_ITEM', postItem);
+    yield takeEvery ('DELETE_ITEM', deleteItem);
 }
 
 export default itemSaga;

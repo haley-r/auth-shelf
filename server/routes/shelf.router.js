@@ -19,16 +19,27 @@ router.get('/', (req, res) => {
 /**
  * Add an item for the logged in user to the shelf
  */
-// router.post('/', (req, res) => {
+router.post('/', (req, res) => {
+const shelfItem = req.body;
+    console.log(shelfItem);
 
-// const shelfItem = req.body.shelfItem;
-// //   const password = encryptLib.encryptPassword(req.body.password);
-//   const queryText = 'INSERT INTO "item" (description, image_url, user_id) VALUES ($1, $2, $3)';
-//   pool
-//     .query(queryText, [shelfItem.description, shelfItem.image_url, shelfItem.user_id])
-//     .then(() => res.sendStatus(201))
-//     .catch(() => res.sendStatus(500));
-// });
+//   const password = encryptLib.encryptPassword(req.body.password);
+  const queryText = 'INSERT INTO "item" (description, image_url, user_id) VALUES ($1, $2, $3)';
+  pool
+      .query(queryText, [shelfItem.tempItemDescription, shelfItem.tempItemImageUrl, shelfItem.tempItemUserId])
+    .then(() => res.sendStatus(201))
+    .catch(() => res.sendStatus(500));
+});
+
+router.delete('/:id', (req, res) => {
+    const deleteId =req.params.id;
+    console.log(deleteId);
+    const queryText = `DELETE FROM "item" WHERE "id" =$1`;
+    pool
+        .query(queryText, [deleteId])
+        .then(() => res.sendStatus(200))
+        .catch(() => res.sendStatus(500));
+});
 
 
 

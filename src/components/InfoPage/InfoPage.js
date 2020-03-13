@@ -10,20 +10,27 @@ class InfoPage extends Component {
   state = {
     tempItemDescription: "",
     tempItemImageUrl: "",
-    tempItemUserId:this.props.user.id
+    tempItemUserId: this.props.user.id
   };
-  
+
   onChange = (event, type) => {
-    this.setState({[type]:event.target.value})
+    this.setState({ [type]: event.target.value })
   };
-  
+
   onSubmit = () => {
-    console.log('Looky here',this.state);
+    console.log('Looky here', this.state);
     this.props.dispatch({
-      type:'POST_ITEM',
-      payload:this.state
+      type: 'POST_ITEM',
+      payload: this.state
     });
   };
+
+  deleteItem = (data) => {
+    this.props.dispatch({
+      type: 'DELETE_ITEM',
+      payload: data
+    })
+  }
 
   render() {
     return (
@@ -32,20 +39,19 @@ class InfoPage extends Component {
         <input placeholder="description" onChange={event => this.onChange(event, "tempItemDescription")}></input>
         <input placeholder="earl" onChange={event => this.onChange(event, "tempItemImageUrl")}></input>
         <button onClick={this.onSubmit}>Submit</button>
-       
-          {JSON.stringify(this.props.item)}
-          
-            {this.props.item[0] ? (
-              <ul>
-                {this.props.item.map(thing => (
-                  <li>{thing.description}</li>
-                ))}
-              </ul>
-            ) : (
-              <p></p>
-            )}
-         
-       
+        {this.props.item[0] ? (
+          <ul>
+            {this.props.item.map(thing => (
+              <>
+                <img src={thing.image_url} width='350px' />
+                <li>{thing.description} <button onClick={() => this.deleteItem(thing.id)}>DELETE</button></li>
+
+              </>
+            ))}
+          </ul>
+        ) : (
+            <p>No Data</p>
+          )}
       </div>
     );
   }
