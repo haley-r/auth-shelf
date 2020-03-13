@@ -19,7 +19,7 @@ class InfoPage extends Component {
             {
               this.props.item[0] ?
                 <ul>{this.props.item.map((thing) =>
-                  <li>hi</li>
+                  <li>{thing.description}</li>
                 )}</ul>
                 :
                 <p></p>
